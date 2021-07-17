@@ -1,0 +1,63 @@
+@use '../../../Styles/utility' as u;
+
+.message {
+  display: flex;
+  align-items: center;
+  width: -webkit-fit-content;
+  width: -moz-fit-content;
+  width: fit-content;
+
+  max-width: 70%;
+  margin: 13px 0;
+  padding: 8px 8px 8px 8px;
+  border-radius: 8px;
+  background: u.$chat-white;
+  position: relative;
+  box-shadow: 0px 1px 1px -1px #000;
+  color: rgb(54, 54, 54);
+  &::before {
+    content: " ";
+    position: absolute;
+    border: 10px solid transparent;
+    border-top-color: #fff;
+    top: 0;
+    left: -8px;
+  }
+
+  &__body {
+    font-size: 14px;
+    // text-align: justify;
+  }
+
+  &__filler {
+    width: 40px;
+    display: inline-block;
+    height: 3px;
+    background: transparent;
+  }
+
+  &__timestamp {
+    position: absolute;
+    font-size: 11px;
+    color: grey;
+    right: 7px;
+    bottom: 5px;
+  }
+}
+
+.message.right {
+  margin-left: auto;
+  background: u.$chat-message-right;
+
+  &::before {
+    display: none;
+  }
+  &::after {
+    content: " ";
+    position: absolute;
+    border: 10px solid transparent;
+    border-top-color: u.$chat-message-right;
+    top: 0;
+    right: -8px;
+  }
+}

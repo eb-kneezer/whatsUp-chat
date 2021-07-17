@@ -1,0 +1,57 @@
+@use '../../../Styles/utility' as u;
+
+.sidechat {
+  width: 100%;
+  height: 71px;
+  padding: 0 12px;
+  cursor: pointer;
+  @include u.flex-display(row, flex-start, center);
+
+  &:hover {
+    background: u.$sidebar-search-grey;
+  }
+
+  &__img {
+    width: 47px;
+    height: 47px;
+    background: grey;
+    border-radius: 50%;
+  }
+
+  &__info {
+    flex: 1;
+    margin-left: 13px;
+    padding: 13px 0;
+    border-bottom: 0.5px solid u.$sidebar-header-grey;
+    &--top {
+      @include u.flex-display(row, space-between, center);
+      p:first-child {
+        font-size: 18px;
+      }
+      p:last-child {
+        font-size: 12px;
+      }
+    }
+    &--bottom {
+      @include u.flex-display(row, space-between, center);
+      @include u.flex-display(row, space-between, center);
+
+      p {
+        font-size: 15px;
+        color: grey;
+      }
+
+      span {
+        text-align: center;
+        line-height: 18px;
+        height: 20px;
+        min-width: 20px;
+        border-radius: 10px;
+        color: u.$chat-white;
+        background: rgb(75, 228, 75);
+        font-size: 16px;
+        // padding-bottom: 17px;
+      }
+    }
+  }
+}

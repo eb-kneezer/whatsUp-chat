@@ -1,0 +1,69 @@
+@use '../../Styles/utility' as u;
+
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 35%;
+  min-width: 250px;
+  border-right: 1px solid u.$sidebar-margin-grey;
+  &__header {
+    @include u.flex-display(row, space-between, center);
+    height: 60px;
+    padding: 20px 17px;
+    background: u.$sidebar-header-grey;
+
+    &--img {
+      width: 43px;
+      height: 43px;
+      background: grey;
+      border-radius: 50%;
+    }
+
+    &--actions {
+      @include u.flex-display(row, space-between, center);
+      width: 130px;
+
+      span {
+        display: grid;
+        place-items: center;
+        height: 37px;
+        width: 37px;
+        border-radius: 50%;
+        cursor: pointer;
+
+        &:hover {
+          background-color: u.$sidebar-margin-grey;
+        }
+      }
+    }
+  }
+
+  &__search {
+    @include u.flex-display(row, center, center);
+    height: 50px;
+    padding: 9px 0;
+    background-color: u.$sidebar-search-grey;
+    border-bottom: 1px solid rgba(212, 212, 212, 0.274);
+
+    &--container {
+      @include u.flex-display(row, flex-start, center);
+      background-color: u.$chat-white;
+      width: 90%;
+      border-radius: 20px;
+      padding-left: 12px;
+
+      input {
+        border: none;
+        outline: none;
+        width: 70%;
+        margin-left: 23px;
+        height: 35px;
+      }
+    }
+  }
+  &__container {
+    flex: 1;
+    overflow-y: scroll;
+  }
+}

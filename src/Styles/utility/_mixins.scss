@@ -1,0 +1,8 @@
+@mixin flex-display($direction: row, $justify: center, $align: center) {
+  display: flex;
+  flex-direction: $direction;
+  justify-content: $justify;
+  -webkit-justify-content: $justify;
+  align-items: $align;
+  -webkit-align-items: $align;
+}
