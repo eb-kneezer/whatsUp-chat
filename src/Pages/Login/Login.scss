@@ -1,0 +1,51 @@
+@use '../../Styles/utility' as u;
+
+.login {
+  width: 500px;
+  height: 300px;
+  border-radius: 3px;
+  @include u.flex-display(row, center, center);
+  box-shadow: 0px 0px 10px -1px #6d6d6dbe;
+  color: u.$chat-ribbon-green;
+  background: u.$sidebar-search-grey;
+  overflow: hidden;
+
+  &__img {
+    width: 55%;
+    height: 100%;
+    background: linear-gradient(#0000002f, #00000049),
+      url("../../Assets/img/login.jpg");
+    background-size: cover;
+    background-position: center;
+  }
+
+  &__cta {
+    @include u.flex-display(column, center, center);
+    height: 100%;
+    width: 45%;
+
+    &--text {
+      font-size: 24px;
+      font-weight: bold;
+      margin: 20px 0;
+    }
+    &--btn {
+      @include u.flex-display(row, center, center);
+      border: 2px solid transparent;
+      outline: 0;
+      letter-spacing: 0.5px;
+      padding: 5px 15px;
+      border-radius: 5px;
+      font-weight: bold;
+      color: u.$chat-white;
+      background: u.$chat-ribbon-green;
+      cursor: pointer;
+
+      &:hover {
+        background: u.$chat-white;
+        color: u.$chat-ribbon-green;
+        border: 2px solid u.$chat-ribbon-green;
+      }
+    }
+  }
+}

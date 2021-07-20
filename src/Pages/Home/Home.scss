@@ -16,7 +16,19 @@
     padding: 5px 10px;
     background: u.$chat-ribbon-green;
     color: u.$chat-white;
-    @include u.flex-display(row, flex-start, center);
+    @include u.flex-display(row, space-between, center);
+
+    span:last-child {
+      @include u.flex-display(row, center, center);
+      height: 30px;
+      width: 30px;
+      border-radius: 5px;
+      cursor: pointer;
+
+      &:hover {
+        background: rgb(194, 18, 18);
+      }
+    }
   }
   &__chat {
     @include u.flex-display(row);

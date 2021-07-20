@@ -7,6 +7,7 @@
   width: 35%;
   min-width: 250px;
   border-right: 1px solid u.$sidebar-margin-grey;
+  position: relative;
   &__header {
     @include u.flex-display(row, space-between, center);
     height: 60px;
@@ -18,6 +19,7 @@
       height: 43px;
       background: grey;
       border-radius: 50%;
+      overflow: hidden;
     }
 
     &--actions {
@@ -35,6 +37,9 @@
         &:hover {
           background-color: u.$sidebar-margin-grey;
         }
+      }
+      .active {
+        background-color: u.$sidebar-active-grey;
       }
     }
   }
@@ -65,5 +70,44 @@
   &__container {
     flex: 1;
     overflow-y: scroll;
+  }
+
+  &__modal {
+    @include u.flex-display(row, center, space-around);
+    flex-wrap: wrap;
+    width: 150%;
+    min-height: 50%;
+    background: rgba(0, 0, 0, 0.76);
+    position: absolute;
+    top: 70px;
+    left: 10px;
+    z-index: 1000;
+    display: none;
+    > div {
+      @include u.flex-display(column, center, center);
+      margin: 15px;
+      color: #fff;
+      font-size: 14px;
+
+      // z-index: 2000;
+    }
+  }
+
+  &__modal.active {
+    display: flex;
+  }
+}
+
+.sidebar__modal--photo {
+  width: 50px;
+  height: 50px;
+  margin-bottom: 7px;
+  border-radius: 50%;
+  overflow: hidden;
+  cursor: pointer;
+
+  &:hover {
+    border: 3px solid rgb(45, 45, 255);
+    // border-style: outset;
   }
 }
