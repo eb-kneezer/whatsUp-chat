@@ -51,7 +51,7 @@ function App() {
         }));
       dispatch(setAllUsers(usersList));
     });
-  }, []);
+  }, [dispatch, history]);
 
   return (
     <div className='App'>

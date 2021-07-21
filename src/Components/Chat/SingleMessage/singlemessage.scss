@@ -8,8 +8,8 @@
   width: fit-content;
 
   max-width: 70%;
-  margin: 13px 0;
-  padding: 8px 8px 8px 8px;
+  margin-top: 13px;
+  padding: 5px 8px 5px 8px;
   border-radius: 8px;
   background: u.$chat-white;
   position: relative;
@@ -26,7 +26,6 @@
 
   &__body {
     font-size: 14px;
-    // text-align: justify;
   }
 
   &__filler {
@@ -42,6 +41,14 @@
     color: grey;
     right: 7px;
     bottom: 5px;
+  }
+}
+
+.message.same {
+  margin-top: 3px;
+  &::before,
+  &::after {
+    display: none;
   }
 }
 

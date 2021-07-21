@@ -5,7 +5,7 @@ const INIT_STATE: ChatType[] = [];
 
 const AllChatsReducer = (state = INIT_STATE, action: AllChatActionType) => {
   if (action.type === "SET_ALL_CHATS") {
-    return action.payload;
+    return [...action.payload];
   } else {
     return state;
   }

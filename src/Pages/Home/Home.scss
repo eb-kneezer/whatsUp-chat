@@ -1,7 +1,5 @@
 @use '../../Styles/utility' as u;
 
-//
-
 .container {
   width: 60%;
   min-width: 650px;
@@ -19,14 +17,14 @@
     @include u.flex-display(row, space-between, center);
 
     span:last-child {
-      @include u.flex-display(row, center, center);
+      @include u.flex-display(row, space-between, center);
       height: 30px;
-      width: 30px;
-      border-radius: 5px;
+      width: 85px;
+      padding: 0 5px;
       cursor: pointer;
 
       &:hover {
-        background: rgb(194, 18, 18);
+        background: rgba(0, 0, 0, 0.123);
       }
     }
   }

@@ -10,7 +10,7 @@ const INIT_STATE: UserType = {
 
 const UserReducer = (state = INIT_STATE, action: UserActionType) => {
   if (action.type === "SET_USER") {
-    return action.payload;
+    return { ...action.payload };
   } else {
     return state;
   }

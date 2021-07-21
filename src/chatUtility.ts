@@ -14,57 +14,72 @@ export type UserType = {
   photo: string | null;
 };
 
-export const getAllChats = (myID: string) => {
-  const chats: ChatArrayType = [];
-  chatDb
-    .collection("users")
-    .doc(myID)
-    .collection("chats")
-    .onSnapshot(query => {
-      query.forEach(doc => {
-        chats.push({ [doc.id]: doc.data() });
+export const formatTime = (time: string) => {
+  const timestamp = new Date(time);
+
+  const formattedTime = `${timestamp.getHours()}:${
+    timestamp.getMinutes() < 10
+      ? "0" + timestamp.getMinutes()
+      : timestamp.getMinutes()
+  }`;
+  return formattedTime;
+};
+
+export const sendMessages = (
+  user: UserType,
+  text: string,
+  activeChat: ChatType
+) => {
+  const prevChatState = { ...activeChat };
+  const recieverID = Object.keys(activeChat)[0];
+  const reciever = activeChat[recieverID];
+  const time = new Date().toISOString();
+
+  if (reciever.messages) {
+    chatDb
+      .collection("users")
+      .doc(user.uid)
+      .collection("chats")
+      .doc(recieverID)
+      .set({
+        ...prevChatState[recieverID],
+        messages: [
+          ...reciever.messages,
+          { text: text, uid: user.uid, timestamp: time },
+        ],
       });
-    });
-  // console.log(chats);
-  return chats;
-};
 
-export const getMessages = () => {
-  // chatDb
-  //   .collection("users")
-  //   .doc("miw4EhK0IW5jV5ED8c8i")
-  //   .collection("chats")
-  //   .doc("7MyUDmYgqQvjiJZd0QQq")
-  //   .get()
-  //   .then(doc => {
-  //     doc.exists ? console.log(doc.data()) : console.log("nothing");
-  //   });
-};
+    chatDb
+      .collection("users")
+      .doc(recieverID)
+      .collection("chats")
+      .doc(user.uid)
+      .set({
+        name: user.name,
+        messages: [
+          ...reciever.messages,
+          { text: text, uid: user.uid, timestamp: time },
+        ],
+      });
+  } else {
+    chatDb
+      .collection("users")
+      .doc(user.uid)
+      .collection("chats")
+      .doc(recieverID)
+      .set({
+        ...prevChatState[recieverID],
+        messages: [{ text: text, uid: user.uid, timestamp: time }],
+      });
 
-export const sendMessages = (recieverId: string) => {
-  chatDb
-    .collection("users")
-    .doc("senderId")
-    .collection("chats")
-    .doc(recieverId)
-    .set({
-      messages: [
-        { text: "hello world", timestamp: "9:00" },
-        { text: "how are you", timestamp: "9:01" },
-        { text: "i'm good my guy", timestamp: "9:04" },
-      ],
-    });
-
-  chatDb
-    .collection("users")
-    .doc(recieverId)
-    .collection("chats")
-    .doc("senderId")
-    .set({
-      messages: [
-        { text: "hello world", timestamp: "9:00" },
-        { text: "how are you", timestamp: "9:01" },
-        { text: "i'm good my guy", timestamp: "9:04" },
-      ],
-    });
+    chatDb
+      .collection("users")
+      .doc(recieverID)
+      .collection("chats")
+      .doc(user.uid)
+      .set({
+        name: user.name,
+        messages: [{ text: text, uid: user.uid, timestamp: time }],
+      });
+  }
 };

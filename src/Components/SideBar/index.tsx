@@ -12,7 +12,6 @@ const SideBar = () => {
   const { user, allChats, allUsers } = useAppSelector(state => state);
 
   const [isSideModalOpen, setIsSideModalOpen] = useState<boolean>(false);
-
   const { uid, photo } = user;
 
   const initChat = (recieverId: string, displayname: string) => {

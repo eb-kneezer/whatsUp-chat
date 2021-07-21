@@ -1,9 +1,8 @@
 import { ActiveChatAction } from "./actionTypes";
-import { ChatType } from "../../chatUtility";
 
-type SetActiveChat = (chat: ChatType) => ActiveChatAction;
+type SetActiveChat = (chatID: string) => ActiveChatAction;
 
-export const setActiveChat: SetActiveChat = chat => ({
+export const setActiveChat: SetActiveChat = chatID => ({
   type: "SET_ACTIVE_CHAT",
-  payload: chat,
+  payload: chatID,
 });

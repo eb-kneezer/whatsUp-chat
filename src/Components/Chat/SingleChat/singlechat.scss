@@ -16,17 +16,23 @@
     height: 47px;
     background: grey;
     border-radius: 50%;
+    overflow: hidden;
   }
 
   &__info {
     flex: 1;
+    overflow: hidden;
     margin-left: 13px;
     padding: 13px 0;
     border-bottom: 0.5px solid u.$sidebar-header-grey;
     &--top {
       @include u.flex-display(row, space-between, center);
       p:first-child {
-        font-size: 18px;
+        flex: 1;
+        font-size: 17px;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
       }
       p:last-child {
         font-size: 12px;
@@ -34,14 +40,18 @@
     }
     &--bottom {
       @include u.flex-display(row, space-between, center);
-      @include u.flex-display(row, space-between, center);
 
       p {
-        font-size: 15px;
+        flex: 1;
+        font-size: 14px;
         color: grey;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
       }
 
-      span {
+      & > span {
+        display: block;
         text-align: center;
         line-height: 18px;
         height: 20px;
@@ -50,8 +60,11 @@
         color: u.$chat-white;
         background: rgb(75, 228, 75);
         font-size: 16px;
-        // padding-bottom: 17px;
       }
     }
+  }
+
+  &.active {
+    background: u.$sidebar-header-grey;
   }
 }
