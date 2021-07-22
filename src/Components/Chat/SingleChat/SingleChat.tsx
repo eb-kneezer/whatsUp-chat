@@ -26,17 +26,19 @@ const SingleChat = ({ chat }: { chat: ChatType }) => {
       <div className='sidechat__info'>
         <div className='sidechat__info--top'>
           <p>{chat[id].name}</p>
-          {numOfMessages && (
+          {numOfMessages ? (
             <p>{formatTime(chat[id].messages[numOfMessages - 1].timestamp)}</p>
+          ) : (
+            <p></p>
           )}
         </div>
         <div className='sidechat__info--bottom'>
           {numOfMessages ? (
             <p>{chat[id].messages[numOfMessages - 1].text}</p>
           ) : (
-            <i style={{ fontSize: "14px" }}>empty here...</i>
+            <i style={{ fontSize: "14px" }}>now say WhatsUp</i>
           )}
-          <span>2</span>
+          {/* <span>2</span> */}
         </div>
       </div>
     </div>

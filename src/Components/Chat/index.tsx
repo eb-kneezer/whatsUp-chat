@@ -4,10 +4,15 @@ import { IoCallOutline } from "react-icons/io5";
 import { RiMoreLine } from "react-icons/ri";
 import { MdInsertEmoticon } from "react-icons/md";
 import { BsMic, BsPaperclip, BsUnlockFill } from "react-icons/bs";
-import "./chat.scss";
 import SingleMessage from "./SingleMessage/SingleMessage";
 import { useAppSelector } from "../../Redux/hooks";
-import { sendMessages } from "../../chatUtility";
+import {
+  sendMessages,
+  clearChat,
+  clearChatForEveryone,
+  deleteChat,
+} from "../../chatUtility";
+import "./chat.scss";
 
 export type MessageType = {
   text: string;
@@ -19,6 +24,8 @@ const Chat = () => {
   const { activeChat, allUsers, allChats, user } = useAppSelector(
     store => store
   );
+  const [isOptionsOpen, setIsOptionsOpen] = useState<boolean>(false);
+
   const [chatInput, setChatInput] = useState("");
   const [scroll, setScroll] = useState(0);
   const messagesEndRef = useRef<null | HTMLDivElement>(null);
@@ -41,16 +48,16 @@ const Chat = () => {
   return (
     <div className='chat'>
       <div className='chat__header'>
+        <div className='current-img'>
+          <img
+            src={`${activeUserObject && activeUserObject?.photo}`}
+            alt={`${activeUserObject && activeUserObject?.name}`}
+          />
+        </div>
         <div className='chat__header--current'>
-          <div className='current-img'>
-            <img
-              src={`${activeUserObject && activeUserObject?.photo}`}
-              alt={`${activeUserObject && activeUserObject?.name}`}
-            />
-          </div>
           <div className='current-info'>
             <p>{activeUserObject?.name}</p>
-            <p>last seen today at 21:02</p>
+            {/* <p>last seen today at 21:02</p> */}
           </div>
         </div>
         <div className='chat__header--options'>
@@ -66,9 +73,35 @@ const Chat = () => {
             <span>
               <VscSearch />
             </span>
-            <span>
+            <span
+              className={`${isOptionsOpen && "active"}`}
+              onClick={() => setIsOptionsOpen(!isOptionsOpen)}>
               <RiMoreLine />
             </span>
+          </div>
+
+          <div className={`more ${isOptionsOpen && "open"}`}>
+            <p
+              onClick={() => {
+                clearChat(user.uid, activeChat);
+                setIsOptionsOpen(!isOptionsOpen);
+              }}>
+              Clear messages
+            </p>
+            <p
+              onClick={() => {
+                clearChatForEveryone(user.uid, activeChat);
+                setIsOptionsOpen(!isOptionsOpen);
+              }}>
+              Clear messages for everyone
+            </p>
+            <p
+              onClick={() => {
+                deleteChat(user.uid, activeChat);
+                setIsOptionsOpen(!isOptionsOpen);
+              }}>
+              Delete chat
+            </p>
           </div>
         </div>
       </div>
@@ -118,7 +151,8 @@ const Chat = () => {
             <form
               onSubmit={e => {
                 e.preventDefault();
-                currentChat && sendMessages(user, chatInput, currentChat);
+                if (currentChat && chatInput)
+                  sendMessages(user, chatInput, currentChat);
                 setChatInput("");
                 setScroll(scroll + 1);
               }}>

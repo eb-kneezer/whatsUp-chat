@@ -1,5 +1,6 @@
 import { chatDb } from "./Firebase/firebase";
-import firebase from "firebase";
+import firebase from "firebase/app";
+import "firebase/firestore";
 
 export type ChatType = {
   [key: string]: firebase.firestore.DocumentData;
@@ -28,58 +29,83 @@ export const formatTime = (time: string) => {
 export const sendMessages = (
   user: UserType,
   text: string,
-  activeChat: ChatType
+  currentChat: ChatType
 ) => {
-  const prevChatState = { ...activeChat };
-  const recieverID = Object.keys(activeChat)[0];
-  const reciever = activeChat[recieverID];
+  const prevChatState = { ...currentChat };
+  const recieverID = Object.keys(prevChatState)[0];
   const time = new Date().toISOString();
 
-  if (reciever.messages) {
-    chatDb
-      .collection("users")
-      .doc(user.uid)
-      .collection("chats")
-      .doc(recieverID)
-      .set({
-        ...prevChatState[recieverID],
-        messages: [
-          ...reciever.messages,
-          { text: text, uid: user.uid, timestamp: time },
-        ],
-      });
+  chatDb
+    .collection("users")
+    .doc(user.uid)
+    .collection("chats")
+    .doc(recieverID)
+    .update({
+      messages: firebase.firestore.FieldValue.arrayUnion({
+        text: text,
+        uid: user.uid,
+        timestamp: time,
+      }),
+    });
 
-    chatDb
-      .collection("users")
-      .doc(recieverID)
-      .collection("chats")
-      .doc(user.uid)
-      .set({
-        name: user.name,
-        messages: [
-          ...reciever.messages,
-          { text: text, uid: user.uid, timestamp: time },
-        ],
-      });
-  } else {
-    chatDb
-      .collection("users")
-      .doc(user.uid)
-      .collection("chats")
-      .doc(recieverID)
-      .set({
-        ...prevChatState[recieverID],
-        messages: [{ text: text, uid: user.uid, timestamp: time }],
-      });
+  chatDb
+    .collection("users")
+    .doc(recieverID)
+    .collection("chats")
+    .doc(user.uid)
+    .update({
+      messages: firebase.firestore.FieldValue.arrayUnion({
+        text: text,
+        uid: user.uid,
+        timestamp: time,
+      }),
+    })
+    .catch(() => {
+      alert(
+        `error sending message. ${prevChatState[recieverID].name} has probably deleted his chat with you. (you didn't hear that from me...)`
+      );
+    });
+};
 
-    chatDb
-      .collection("users")
-      .doc(recieverID)
-      .collection("chats")
-      .doc(user.uid)
-      .set({
-        name: user.name,
-        messages: [{ text: text, uid: user.uid, timestamp: time }],
-      });
-  }
+export const deleteChat = (myId: string, recieverId: string) => {
+  chatDb
+    .collection("users")
+    .doc(myId)
+    .collection("chats")
+    .doc(recieverId)
+    .delete()
+    .catch(() => {
+      alert("nothing to delete");
+    });
+};
+
+export const clearChat = (myId: string, recieverId: string) => {
+  chatDb
+    .collection("users")
+    .doc(myId)
+    .collection("chats")
+    .doc(recieverId)
+    .update({
+      messages: firebase.firestore.FieldValue.delete(),
+    });
+};
+
+export const clearChatForEveryone = (myId: string, recieverId: string) => {
+  chatDb
+    .collection("users")
+    .doc(myId)
+    .collection("chats")
+    .doc(recieverId)
+    .update({
+      messages: firebase.firestore.FieldValue.delete(),
+    });
+
+  chatDb
+    .collection("users")
+    .doc(recieverId)
+    .collection("chats")
+    .doc(myId)
+    .update({
+      messages: firebase.firestore.FieldValue.delete(),
+    });
 };

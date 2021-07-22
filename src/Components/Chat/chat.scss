@@ -12,54 +12,83 @@
     padding: 0 17px;
     background: u.$sidebar-header-grey;
 
+    .current-img {
+      width: 43px;
+      height: 43px;
+      background: #fff;
+      border-radius: 50%;
+      overflow: hidden;
+    }
     &--current {
       flex: 1;
       @include u.flex-display(row, flex-start, center);
-
-      .current-img {
-        width: 43px;
-        height: 43px;
-        background: grey;
-        border-radius: 50%;
-        overflow: hidden;
-      }
+      overflow: hidden;
 
       .current-info {
         margin-left: 15px;
+        overflow: hidden;
         flex: 1;
-        p:first-child {
-          overflow-x: hidden;
+        p {
+          overflow: hidden;
           white-space: nowrap;
           text-overflow: ellipsis;
           font-size: 16px;
           margin-bottom: 2px;
         }
-        p:last-child {
-          overflow-x: hidden;
-          white-space: nowrap;
-          text-overflow: ellipsis;
-          font-size: 12px;
-          color: rgb(104, 104, 104);
-        }
+        // p:last-child {
+        //   overflow-x: hidden;
+        //   white-space: nowrap;
+        //   text-overflow: ellipsis;
+        //   font-size: 12px;
+        //   color: rgb(104, 104, 104);
+        // }
       }
     }
 
     &--options {
-      width: 200px;
+      width: 245px;
       @include u.flex-display(row, space-between, center);
+      position: relative;
 
       div:first-child {
-        @include u.flex-display(row, center, center);
         border-right: 1px solid grey;
-
+      }
+      div {
+        @include u.flex-display(row, center, center);
         span {
-          margin-right: 12px;
+          margin: 0px 12px;
+
+          &.active {
+            background-color: u.$sidebar-margin-grey;
+          }
         }
       }
-      div:last-child {
-        @include u.flex-display(row, center, center);
-        span {
-          margin-left: 12px;
+
+      .more {
+        position: absolute;
+        background: u.$chat-white;
+        font-size: 14px;
+        top: 55px;
+        right: 0px;
+        width: 200px;
+        border-radius: 3px;
+        color: rgb(66, 66, 66);
+        padding: 10px 0;
+        display: flex;
+        flex-direction: column;
+        display: none;
+        z-index: 2000;
+
+        &.open {
+          display: block;
+        }
+        p {
+          width: 100%;
+          padding: 10px 20px;
+          cursor: pointer;
+          &:hover {
+            background-color: #f0f0f0;
+          }
         }
       }
     }
@@ -91,7 +120,7 @@
 
     &--encryption {
       font-size: 12px;
-      background: #fef4c5;
+      background: u.$chat-yellow;
       text-align: center;
       padding: 10px;
       margin-top: 20px;
@@ -119,7 +148,7 @@
           height: 32px;
           width: 100%;
           font-size: 16px;
-          color: grey;
+          color: rgb(71, 71, 71);
           outline: none;
           border: none;
         }

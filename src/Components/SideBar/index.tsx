@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./sidebar.scss";
 
 import { VscAdd } from "react-icons/vsc";
@@ -6,13 +6,15 @@ import { RiMoreLine, RiDonutChartLine } from "react-icons/ri";
 import { IoMdSearch } from "react-icons/io";
 import SingleChat from "../Chat/SingleChat/SingleChat";
 import { chatDb } from "../../Firebase/firebase";
-import { useAppSelector } from "../../Redux/hooks";
+import { useAppDispatch, useAppSelector } from "../../Redux/hooks";
+import { setActiveChat } from "../../Redux/ActiveChat/actions";
 
 const SideBar = () => {
   const { user, allChats, allUsers } = useAppSelector(state => state);
+  const dispatch = useAppDispatch();
 
   const [isSideModalOpen, setIsSideModalOpen] = useState<boolean>(false);
-  const { uid, photo } = user;
+  const { uid, photo, name } = user;
 
   const initChat = (recieverId: string, displayname: string) => {
     chatDb
@@ -24,8 +26,23 @@ const SideBar = () => {
         name: displayname,
       });
 
+    chatDb
+      .collection("users")
+      .doc(recieverId)
+      .collection("chats")
+      .doc(uid)
+      .set({
+        name: name,
+      });
+
     setIsSideModalOpen(!isSideModalOpen);
   };
+
+  useEffect(() => {
+    if (allChats.length === 1) {
+      dispatch(setActiveChat(Object.keys(allChats[0])[0]));
+    }
+  }, [allChats, dispatch]);
 
   return (
     <div className='sidebar'>
@@ -54,15 +71,40 @@ const SideBar = () => {
         </div>
       </div>
       <div className='sidebar__container'>
-        {allChats
+        {allChats.length
           ? allChats.map(chat => (
               <SingleChat key={Object.keys(chat)[0]} chat={chat} />
             ))
-          : "end"}
+          : (function () {
+              dispatch(setActiveChat(""));
+              return (
+                <div className='sidebar__container--empty'>
+                  <p>
+                    Oops! looks like you have no active chats.
+                    <br /> Click the{" "}
+                    <span>
+                      <VscAdd
+                        style={{
+                          background: "#f0f0f0",
+                          borderRadius: "50%",
+                          height: "25px",
+                          width: "25px",
+                          border: "1px solid #e6e6e6",
+                          position: "absolute",
+                          top: "-16px",
+                          left: "4px",
+                        }}
+                      />{" "}
+                    </span>
+                    above to find a fellow WhatsUpper.
+                  </p>
+                </div>
+              );
+            })()}
       </div>
 
       <div className={`sidebar__modal ${isSideModalOpen ? `active` : ``}`}>
-        {allUsers ? (
+        {allUsers.length ? (
           allUsers.map(user => (
             <div key={user.uid}>
               <div

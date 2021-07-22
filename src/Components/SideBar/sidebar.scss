@@ -39,7 +39,7 @@
         }
       }
       .active {
-        background-color: u.$sidebar-active-grey;
+        background-color: u.$sidebar-margin-grey;
       }
     }
   }
@@ -70,12 +70,26 @@
   &__container {
     flex: 1;
     overflow-y: scroll;
+
+    &--empty {
+      background: u.$chat-yellow;
+      padding: 10px 20px;
+      font-size: 13px;
+      margin-left: 7px;
+      text-align: center;
+      line-height: 25px;
+      span {
+        position: relative;
+        display: inline-block;
+        width: 35px;
+      }
+    }
   }
 
   &__modal {
     @include u.flex-display(row, center, space-around);
     flex-wrap: wrap;
-    width: 150%;
+    width: 110%;
     min-height: 50%;
     background: rgba(0, 0, 0, 0.76);
     position: absolute;
