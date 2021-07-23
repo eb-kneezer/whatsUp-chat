@@ -8,12 +8,16 @@ import SingleChat from "../Chat/SingleChat/SingleChat";
 import { chatDb } from "../../Firebase/firebase";
 import { useAppDispatch, useAppSelector } from "../../Redux/hooks";
 import { setActiveChat } from "../../Redux/ActiveChat/actions";
+import { deleteUser } from "../../chatUtility";
+import { useHistory } from "react-router-dom";
 
 const SideBar = () => {
   const { user, allChats, allUsers } = useAppSelector(state => state);
   const dispatch = useAppDispatch();
+  const history = useHistory();
 
   const [isSideModalOpen, setIsSideModalOpen] = useState<boolean>(false);
+  const [isDeleteModal, setIsDeleteModal] = useState<boolean>(false);
   const { uid, photo, name } = user;
 
   const initChat = (recieverId: string, displayname: string) => {
@@ -42,7 +46,10 @@ const SideBar = () => {
     if (allChats.length === 1) {
       dispatch(setActiveChat(Object.keys(allChats[0])[0]));
     }
-  }, [allChats, dispatch]);
+    if (!allUsers) {
+      history.push("/");
+    }
+  }, [allChats, allUsers, dispatch, history]);
 
   return (
     <div className='sidebar'>
@@ -59,9 +66,19 @@ const SideBar = () => {
             onClick={() => setIsSideModalOpen(!isSideModalOpen)}>
             <VscAdd />
           </span>
-          <span>
+          <span onClick={() => setIsDeleteModal(!isDeleteModal)}>
             <RiMoreLine />
           </span>
+
+          <div className={`sideheader-more ${isDeleteModal ? "open" : ""}`}>
+            <p
+              onClick={() => {
+                history.push("/");
+                deleteUser(user.uid);
+              }}>
+              Delete account
+            </p>
+          </div>
         </div>
       </div>
       <div className='sidebar__search'>

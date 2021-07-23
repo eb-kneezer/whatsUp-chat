@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import "./Home.scss";
 
 import SideBar from "../../Components/SideBar";
@@ -9,11 +9,15 @@ import { auth, chatDb } from "../../Firebase/firebase";
 import { useHistory } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../Redux/hooks";
 import { setAllChats } from "../../Redux/AllChats/actions";
+import { FiMenu } from "react-icons/fi";
+import { VscChromeClose } from "react-icons/vsc";
 
 const HomePage = () => {
   const dispatch = useAppDispatch();
   const { user } = useAppSelector(state => state);
   const history = useHistory();
+
+  const [isSideNavOpen, setIsSideNavOpen] = useState<boolean>(false);
 
   const { uid } = user;
 
@@ -44,12 +48,24 @@ const HomePage = () => {
   return (
     <main className='container'>
       <div className='container__ribbon'>
+        <span
+          onClick={() => setIsSideNavOpen(!isSideNavOpen)}
+          className='container__ribbon--openmenu'>
+          {isSideNavOpen ? (
+            <VscChromeClose style={{ color: "white" }} />
+          ) : (
+            <FiMenu style={{ color: "white" }} />
+          )}
+        </span>
         <span className='container__ribbon--text'>WhatsUp</span>
 
         <span onClick={doSignOut}>
           logout
           <CgCloseR style={{ color: "white" }} />
         </span>
+      </div>
+      <div className={`container-sidenav ${isSideNavOpen ? "active" : ""}`}>
+        <SideBar />
       </div>
       {uid && (
         <div className='container__chat'>

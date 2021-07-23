@@ -6,11 +6,22 @@
   width: 65%;
   min-width: 400px;
   height: 100%;
+  position: relative;
+
+  @include u.responsive(mobile) {
+    min-width: 100%;
+    width: 100%;
+  }
   &__header {
     @include u.flex-display(row, space-between, center);
     height: 60px;
     padding: 0 17px;
     background: u.$sidebar-header-grey;
+
+    @include u.responsive(mobile) {
+      width: 100%;
+      padding: 0px;
+    }
 
     .current-img {
       width: 43px;
@@ -18,7 +29,11 @@
       background: #fff;
       border-radius: 50%;
       overflow: hidden;
+      @include u.responsive(mobile) {
+        margin-left: 20px;
+      }
     }
+
     &--current {
       flex: 1;
       @include u.flex-display(row, flex-start, center);
@@ -49,9 +64,19 @@
       width: 245px;
       @include u.flex-display(row, space-between, center);
       position: relative;
+      @include u.responsive(xsmobile) {
+        // justify-self: flex-end;
+        width: -webkit-fit-content;
+        width: -moz-fit-content;
+        width: fit-content;
+        justify-content: flex-end;
+      }
 
       div:first-child {
         border-right: 1px solid grey;
+        @include u.responsive(xsmobile) {
+          display: none;
+        }
       }
       div {
         @include u.flex-display(row, center, center);
@@ -95,8 +120,12 @@
   }
   &__body {
     flex: 1;
-    background-image: url("../../Assets/img/wallpaper.png");
-    background-position: left;
+    background-image: linear-gradient(
+        rgba(255, 255, 255, 0.685),
+        rgba(255, 255, 255, 0.603)
+      ),
+      url(../../Assets/img/wallpaper2.jpg);
+    background-size: cover;
     overflow-y: scroll;
 
     &--messages {
@@ -120,7 +149,7 @@
 
     &--encryption {
       font-size: 12px;
-      background: u.$chat-yellow;
+      background: #f2a0a05b;
       text-align: center;
       padding: 10px;
       margin-top: 20px;
@@ -165,6 +194,21 @@
           background-color: u.$sidebar-margin-grey;
         }
       }
+    }
+  }
+
+  &__inactive {
+    height: 100%;
+    background-image: url("../../Assets/img/empty-chat.jpg");
+    background-position: center top;
+    border-bottom: 5px solid #f19191;
+    position: relative;
+
+    p {
+      font-size: 10px;
+      position: absolute;
+      bottom: 0px;
+      right: 0px;
     }
   }
 }

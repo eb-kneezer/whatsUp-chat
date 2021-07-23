@@ -8,6 +8,14 @@
   max-height: 750px;
   background-color: #fff;
   box-shadow: 0px 0px 10px -1px #6d6d6dbe;
+  position: relative;
+
+  @include u.responsive(mobile) {
+    min-width: 100%;
+    width: 100%;
+    min-height: 100%;
+    height: 100%;
+  }
 
   &__ribbon {
     height: 5%;
@@ -15,6 +23,19 @@
     background: u.$chat-ribbon-green;
     color: u.$chat-white;
     @include u.flex-display(row, space-between, center);
+
+    &--openmenu {
+      height: 34px;
+      width: 37px;
+      padding: 7px;
+      // background-color: rgba(0, 0, 0, 0.185);
+
+      display: none;
+
+      @include u.responsive(mobile) {
+        display: block;
+      }
+    }
 
     span:last-child {
       @include u.flex-display(row, space-between, center);
@@ -28,6 +49,27 @@
       }
     }
   }
+
+  &-sidenav {
+    position: absolute;
+    width: 250px;
+    z-index: 3000;
+    height: 100%;
+    background: white;
+    display: none;
+    transition: all 3s ease;
+    transform: translateX(-250px);
+  }
+
+  &-sidenav.active {
+    display: none;
+    @include u.responsive(mobile) {
+      display: block;
+      transform: translateX(0px);
+      // background: red;
+    }
+  }
+
   &__chat {
     @include u.flex-display(row);
     width: 100%;

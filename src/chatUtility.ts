@@ -1,5 +1,6 @@
-import { chatDb } from "./Firebase/firebase";
+import { auth, chatDb, userDb } from "./Firebase/firebase";
 import firebase from "firebase/app";
+import "firebase/database";
 import "firebase/firestore";
 
 export type ChatType = {
@@ -108,4 +109,17 @@ export const clearChatForEveryone = (myId: string, recieverId: string) => {
     .update({
       messages: firebase.firestore.FieldValue.delete(),
     });
+};
+
+export const deleteUser = (userId: string) => {
+  auth.signOut();
+
+  auth.currentUser
+    ?.delete()
+    .then(() => alert("account deleted"))
+    .catch(() => {
+      alert("failed to delete");
+    });
+  chatDb.collection("users").doc(userId).delete();
+  userDb.ref("users/" + userId).remove();
 };

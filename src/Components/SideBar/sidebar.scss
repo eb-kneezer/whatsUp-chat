@@ -1,5 +1,11 @@
 @use '../../Styles/utility' as u;
 
+.container__chat .sidebar {
+  @include u.responsive(mobile) {
+    display: none;
+  }
+}
+
 .sidebar {
   display: flex;
   flex-direction: column;
@@ -8,6 +14,7 @@
   min-width: 250px;
   border-right: 1px solid u.$sidebar-margin-grey;
   position: relative;
+
   &__header {
     @include u.flex-display(row, space-between, center);
     height: 60px;
@@ -25,6 +32,32 @@
     &--actions {
       @include u.flex-display(row, space-between, center);
       width: 130px;
+      position: relative;
+
+      & .sideheader-more {
+        position: absolute;
+        font-size: 14px;
+        background: rgb(231, 154, 154);
+        padding: 10px 0;
+        width: 200px;
+        top: 55px;
+        right: 0px;
+        display: none;
+
+        &.open {
+          display: block;
+        }
+        p {
+          width: 100%;
+          padding: 10px 20px;
+          cursor: pointer;
+          &:hover {
+            background-color: #ff0000;
+            color: #fff;
+            font-weight: bold;
+          }
+        }
+      }
 
       span {
         display: grid;

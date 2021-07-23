@@ -1,0 +1,12 @@
+@mixin responsive($breakpoint) {
+  @if $breakpoint == mobile {
+    @media only screen and (max-width: 650px) {
+      @content;
+    }
+  }
+  @if $breakpoint == xsmobile {
+    @media only screen and (max-width: 400px) {
+      @content;
+    }
+  }
+}
