@@ -4,6 +4,10 @@ import { IoCallOutline, IoSendSharp } from "react-icons/io5";
 import { RiMoreLine } from "react-icons/ri";
 import { MdInsertEmoticon } from "react-icons/md";
 import { BsPaperclip, BsUnlockFill } from "react-icons/bs";
+
+import "emoji-mart/css/emoji-mart.css";
+import { Picker } from "emoji-mart";
+
 import SingleMessage from "./SingleMessage/SingleMessage";
 import { useAppSelector } from "../../Redux/hooks";
 import {
@@ -24,7 +28,8 @@ const Chat = () => {
   const { activeChat, allUsers, allChats, user } = useAppSelector(
     store => store
   );
-  const [isOptionsOpen, setIsOptionsOpen] = useState<boolean>(false);
+  const [isOptionsOpen, setIsOptionsOpen] = useState(false);
+  const [isEmojiOpen, setIsEmojiOpen] = useState(false);
 
   const [chatInput, setChatInput] = useState("");
   const [scroll, setScroll] = useState(0);
@@ -152,8 +157,27 @@ const Chat = () => {
           </div>
         </div>
         <div className='chat__input'>
+          <div className={`chat__input--emoji ${isEmojiOpen ? "open" : ""}`}>
+            <Picker
+              onSelect={e => {
+                const parsedEmoji = JSON.parse(JSON.stringify(e));
+                setChatInput(chatInput + parsedEmoji.native);
+              }}
+              enableFrequentEmojiSort={true}
+              color='#8a52d9'
+              title=''
+              emoji=''
+              perLine={10}
+              skin={4}
+              theme='light'
+              showPreview={false}
+              showSkinTones={false}
+            />
+          </div>
           <div className='chat__input--container'>
-            <span>
+            <span
+              className={`${isEmojiOpen && "active"}`}
+              onClick={() => setIsEmojiOpen(!isEmojiOpen)}>
               <MdInsertEmoticon />
             </span>
             <span>

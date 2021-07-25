@@ -160,11 +160,11 @@
   &__input {
     @include u.flex-display(row, center, center);
     background-color: u.$sidebar-header-grey;
-    height: 60px;
-    padding: 0 20px;
+    min-height: 60px;
 
     &--container {
       @include u.flex-display(row, space-between, center);
+      padding: 0 20px;
       width: 100%;
 
       .textInput {
@@ -193,6 +193,21 @@
         &:hover {
           background-color: u.$sidebar-margin-grey;
         }
+
+        &.active {
+          background-color: u.$sidebar-margin-grey;
+        }
+      }
+    }
+
+    &--emoji {
+      position: absolute;
+      display: none;
+      left: 10px;
+      bottom: 60px;
+
+      &.open {
+        display: block;
       }
     }
   }
