@@ -15,6 +15,7 @@ import {
   clearChat,
   clearChatForEveryone,
   deleteChat,
+  sendMessageToRoom,
 } from "../../chatUtility";
 import "./chat.scss";
 
@@ -22,10 +23,11 @@ export type MessageType = {
   text: string;
   uid: string;
   timestamp: string;
+  name?: string;
 };
 
 const Chat = () => {
-  const { activeChat, allUsers, allChats, user } = useAppSelector(
+  const { activeChat, allUsers, allChats, allRooms, user } = useAppSelector(
     store => store
   );
   const [isOptionsOpen, setIsOptionsOpen] = useState(false);
@@ -35,11 +37,14 @@ const Chat = () => {
   const [scroll, setScroll] = useState(0);
   const messagesEndRef = useRef<null | HTMLDivElement>(null);
 
-  const activeUserObject = allUsers.find(user => user.uid === activeChat);
+  const activeUserObject = allUsers.find(user => user.uid === activeChat); ///////
 
-  const currentChat = [...allChats].find(
-    chat => Object.keys(chat)[0] === activeChat
-  );
+  const currentChat = activeUserObject
+    ? [...allChats].find(chat => Object.keys(chat)[0] === activeChat)
+    : [...allRooms].find(chat => Object.keys(chat)[0] === activeChat);
+
+  // console.log(currentChat);
+
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({
       behavior: "smooth",
@@ -50,13 +55,21 @@ const Chat = () => {
     scrollToBottom();
   }, [scroll]);
 
+  // function myTrim(x: string) {
+  //   return x.replace(/^\s+|\s+$/gm, "");
+  // }
+
   const handleFormSubmit = (
     e:
       | React.FormEvent<HTMLFormElement>
       | React.MouseEvent<HTMLSpanElement, MouseEvent>
   ) => {
     e.preventDefault();
-    if (currentChat && chatInput) sendMessages(user, chatInput, currentChat);
+    if (activeUserObject && currentChat && chatInput.trim()) {
+      sendMessages(user, chatInput, currentChat);
+    } else if (!activeUserObject && chatInput.trim()) {
+      sendMessageToRoom(user, activeChat, chatInput);
+    }
     setChatInput("");
     setScroll(scroll + 1);
   };
@@ -67,13 +80,25 @@ const Chat = () => {
         <div className='chat__header'>
           <div className='current-img'>
             <img
-              src={`${activeUserObject && activeUserObject?.photo}`}
+              src={`${
+                activeUserObject
+                  ? activeUserObject?.photo
+                  : `https://eu.ui-avatars.com/api/?name=${
+                      currentChat &&
+                      currentChat[Object.keys(currentChat)[0]].name
+                    }`
+              }`}
               alt={`${activeUserObject && activeUserObject?.name}`}
             />
           </div>
           <div className='chat__header--current'>
             <div className='current-info'>
-              <p>{activeUserObject?.name}</p>
+              <p>
+                {activeUserObject
+                  ? activeUserObject.name
+                  : currentChat &&
+                    currentChat[Object.keys(currentChat)[0]].name}
+              </p>
               {/* <p>last seen today at 21:02</p> */}
             </div>
           </div>

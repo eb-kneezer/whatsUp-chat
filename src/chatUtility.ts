@@ -27,6 +27,26 @@ export const formatTime = (time: string) => {
   return formattedTime;
 };
 
+export const sendMessageToRoom = (
+  user: UserType,
+  activeChat: string,
+  text: string
+) => {
+  const time = new Date().toISOString();
+
+  chatDb
+    .collection("rooms")
+    .doc(activeChat)
+    .update({
+      messages: firebase.firestore.FieldValue.arrayUnion({
+        text: text,
+        uid: user.uid,
+        timestamp: time,
+        name: user.name,
+      }),
+    });
+};
+
 export const sendMessages = (
   user: UserType,
   text: string,
@@ -122,4 +142,11 @@ export const deleteUser = (userId: string) => {
     });
   chatDb.collection("users").doc(userId).delete();
   userDb.ref("users/" + userId).remove();
+};
+
+export const addNewRoom = (roomName: string) => {
+  chatDb.collection("rooms").add({
+    name: roomName,
+    messages: [],
+  });
 };

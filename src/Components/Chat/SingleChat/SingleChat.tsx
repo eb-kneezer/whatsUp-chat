@@ -36,7 +36,7 @@ const SingleChat = ({ chat }: { chat: ChatType }) => {
           {numOfMessages ? (
             <p>{chat[id].messages[numOfMessages - 1].text}</p>
           ) : (
-            <i style={{ fontSize: "14px" }}>now say WhatsUp</i>
+            <i style={{ fontSize: "14px" }}>draft</i>
           )}
           {/* <span>2</span> */}
         </div>

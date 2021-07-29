@@ -8,16 +8,19 @@ import SingleChat from "../Chat/SingleChat/SingleChat";
 import { chatDb } from "../../Firebase/firebase";
 import { useAppDispatch, useAppSelector } from "../../Redux/hooks";
 import { setActiveChat } from "../../Redux/ActiveChat/actions";
-import { deleteUser } from "../../chatUtility";
+import { addNewRoom, deleteUser } from "../../chatUtility";
 import { useHistory } from "react-router-dom";
+import SingleRoom from "../Chat/SingleRoom/SingleRoom";
 
 const SideBar = () => {
-  const { user, allChats, allUsers } = useAppSelector(state => state);
+  const { user, allChats, allUsers, allRooms } = useAppSelector(state => state);
   const dispatch = useAppDispatch();
   const history = useHistory();
 
   const [isSideModalOpen, setIsSideModalOpen] = useState<boolean>(false);
   const [isDeleteModal, setIsDeleteModal] = useState<boolean>(false);
+  const [newRoomName, setNewRoomName] = useState("");
+
   const { uid, photo, name } = user;
 
   const initChat = (recieverId: string, displayname: string) => {
@@ -88,36 +91,65 @@ const SideBar = () => {
         </div>
       </div>
       <div className='sidebar__container'>
-        {allChats.length
-          ? allChats.map(chat => (
-              <SingleChat key={Object.keys(chat)[0]} chat={chat} />
-            ))
-          : (function () {
-              dispatch(setActiveChat(""));
-              return (
-                <div className='sidebar__container--empty'>
-                  <p>
-                    Oops! looks like you have no active chats.
-                    <br /> Click the{" "}
-                    <span>
-                      <VscAdd
-                        style={{
-                          background: "#f0f0f0",
-                          borderRadius: "50%",
-                          height: "25px",
-                          width: "25px",
-                          border: "1px solid #e6e6e6",
-                          position: "absolute",
-                          top: "-16px",
-                          left: "4px",
-                        }}
-                      />{" "}
-                    </span>
-                    above to find a fellow WhatsUpper.
-                  </p>
-                </div>
-              );
-            })()}
+        <div className='sidebar__container--chats'>
+          <h3>Chats</h3>
+          {allChats.length
+            ? allChats.map(chat => (
+                <SingleChat key={Object.keys(chat)[0]} chat={chat} />
+              ))
+            : (function () {
+                dispatch(setActiveChat(""));
+                return (
+                  <div className='sidebar__container--empty'>
+                    <p>
+                      Oops! looks like you have no active chats.
+                      <br /> Click the{" "}
+                      <span>
+                        <VscAdd
+                          style={{
+                            background: "#f0f0f0",
+                            borderRadius: "50%",
+                            height: "25px",
+                            width: "25px",
+                            border: "1px solid #e6e6e6",
+                            position: "absolute",
+                            top: "-16px",
+                            left: "4px",
+                          }}
+                        />{" "}
+                      </span>
+                      above to find a fellow WhatsUpper.
+                    </p>
+                  </div>
+                );
+              })()}
+        </div>
+        <div className='sidebar__container--rooms'>
+          <h3>Rooms</h3>
+          {allRooms.length
+            ? allRooms.map(room => (
+                <SingleRoom key={Object.keys(room)[0]} room={room} />
+              ))
+            : "no active rooms"}
+          <div className='addRoom'>
+            <button>add new room</button>
+            <form
+              onSubmit={e => {
+                e.preventDefault();
+                newRoomName.trim() && addNewRoom(newRoomName);
+                setNewRoomName("");
+              }}>
+              <input
+                type='text'
+                placeholder='enter room name'
+                value={newRoomName}
+                onChange={e => {
+                  setNewRoomName(e.target.value);
+                }}
+              />
+            </form>
+          </div>
+        </div>
       </div>
 
       <div className={`sidebar__modal ${isSideModalOpen ? `active` : ``}`}>

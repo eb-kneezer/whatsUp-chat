@@ -11,6 +11,7 @@ import { useAppDispatch, useAppSelector } from "../../Redux/hooks";
 import { setAllChats } from "../../Redux/AllChats/actions";
 import { FiMenu } from "react-icons/fi";
 import { VscChromeClose } from "react-icons/vsc";
+import { setAllRooms } from "../../Redux/AllRooms/action";
 
 const HomePage = () => {
   const dispatch = useAppDispatch();
@@ -37,6 +38,15 @@ const HomePage = () => {
           dispatch(setAllChats(chats));
           chats = [];
         });
+
+      let rooms: ChatArrayType = [];
+      chatDb.collection("rooms").onSnapshot(query => {
+        query.forEach(doc => {
+          rooms.push({ [doc.id]: doc.data() });
+        });
+        dispatch(setAllRooms(rooms));
+        rooms = [];
+      });
     }
   }, [dispatch, history, uid]);
 
