@@ -20,6 +20,7 @@ const SideBar = () => {
   const [isSideModalOpen, setIsSideModalOpen] = useState<boolean>(false);
   const [isDeleteModal, setIsDeleteModal] = useState<boolean>(false);
   const [newRoomName, setNewRoomName] = useState("");
+  const [isRoomInputOpen, setIsNewRoomInput] = useState(false);
 
   const { uid, photo, name } = user;
 
@@ -69,7 +70,9 @@ const SideBar = () => {
             onClick={() => setIsSideModalOpen(!isSideModalOpen)}>
             <VscAdd />
           </span>
-          <span onClick={() => setIsDeleteModal(!isDeleteModal)}>
+          <span
+            className={isDeleteModal ? "active" : ""}
+            onClick={() => setIsDeleteModal(!isDeleteModal)}>
             <RiMoreLine />
           </span>
 
@@ -92,7 +95,7 @@ const SideBar = () => {
       </div>
       <div className='sidebar__container'>
         <div className='sidebar__container--chats'>
-          <h3>Chats</h3>
+          <p className='sidebar__container--names'>CHATS</p>
           {allChats.length
             ? allChats.map(chat => (
                 <SingleChat key={Object.keys(chat)[0]} chat={chat} />
@@ -125,18 +128,35 @@ const SideBar = () => {
               })()}
         </div>
         <div className='sidebar__container--rooms'>
-          <h3>Rooms</h3>
+          <p className='sidebar__container--names'>ROOMS</p>
           {allRooms.length
             ? allRooms.map(room => (
                 <SingleRoom key={Object.keys(room)[0]} room={room} />
               ))
-            : "no active rooms"}
+            : (function () {
+                dispatch(setActiveChat(""));
+                return (
+                  <div className='sidebar__container--empty'>
+                    <p>
+                      Oops! looks like there are no active rooms.
+                      <br /> Click the button below to create one.
+                    </p>
+                  </div>
+                );
+              })()}
           <div className='addRoom'>
-            <button>add new room</button>
+            <button
+              onClick={() => {
+                setIsNewRoomInput(!isRoomInputOpen);
+                setNewRoomName("");
+              }}>
+              {`${isRoomInputOpen ? "cancel" : "add new room"}`}
+            </button>
             <form
+              className={isRoomInputOpen ? `inputOpen` : ""}
               onSubmit={e => {
                 e.preventDefault();
-                newRoomName.trim() && addNewRoom(newRoomName);
+                newRoomName.trim() && addNewRoom(newRoomName, user.uid);
                 setNewRoomName("");
               }}>
               <input

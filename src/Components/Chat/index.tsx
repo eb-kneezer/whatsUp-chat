@@ -16,6 +16,8 @@ import {
   clearChatForEveryone,
   deleteChat,
   sendMessageToRoom,
+  clearRoomMessages,
+  deleteRoom,
 } from "../../chatUtility";
 import "./chat.scss";
 
@@ -122,29 +124,49 @@ const Chat = () => {
               </span>
             </div>
 
-            <div className={`more ${isOptionsOpen && "open"}`}>
-              <p
-                onClick={() => {
-                  clearChat(user.uid, activeChat);
-                  setIsOptionsOpen(!isOptionsOpen);
-                }}>
-                Clear messages
-              </p>
-              <p
-                onClick={() => {
-                  clearChatForEveryone(user.uid, activeChat);
-                  setIsOptionsOpen(!isOptionsOpen);
-                }}>
-                Clear messages for everyone
-              </p>
-              <p
-                onClick={() => {
-                  deleteChat(user.uid, activeChat);
-                  setIsOptionsOpen(!isOptionsOpen);
-                }}>
-                Delete chat
-              </p>
-            </div>
+            {activeUserObject ? (
+              <div className={`more ${isOptionsOpen && "open"}`}>
+                <p
+                  onClick={() => {
+                    clearChat(user.uid, activeChat);
+                    setIsOptionsOpen(!isOptionsOpen);
+                  }}>
+                  Clear messages
+                </p>
+                <p
+                  onClick={() => {
+                    clearChatForEveryone(user.uid, activeChat);
+                    setIsOptionsOpen(!isOptionsOpen);
+                  }}>
+                  Clear messages for everyone
+                </p>
+                <p
+                  onClick={() => {
+                    deleteChat(user.uid, activeChat);
+                    setIsOptionsOpen(!isOptionsOpen);
+                  }}>
+                  Delete chat
+                </p>
+              </div>
+            ) : (
+              <div className={`more ${isOptionsOpen && "open"}`}>
+                <p
+                  onClick={() => {
+                    clearRoomMessages(user.uid, activeChat, currentChat);
+
+                    setIsOptionsOpen(!isOptionsOpen);
+                  }}>
+                  Clear messages
+                </p>
+                <p
+                  onClick={() => {
+                    deleteRoom(user.uid, activeChat, currentChat);
+                    setIsOptionsOpen(!isOptionsOpen);
+                  }}>
+                  Delete room
+                </p>
+              </div>
+            )}
           </div>
         </div>
 

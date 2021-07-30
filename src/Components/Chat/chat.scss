@@ -120,11 +120,7 @@
   }
   &__body {
     flex: 1;
-    background-image: linear-gradient(
-        rgba(255, 255, 255, 0.685),
-        rgba(255, 255, 255, 0.603)
-      ),
-      url(../../Assets/img/wallpaper2.jpg);
+    background-image: url("../../Assets/img/wallpaper.png");
     background-size: cover;
     overflow-y: scroll;
 
@@ -149,7 +145,7 @@
 
     &--encryption {
       font-size: 12px;
-      background: #f2a0a05b;
+      background: u.$chat-yellow;
       text-align: center;
       padding: 10px;
       margin-top: 20px;

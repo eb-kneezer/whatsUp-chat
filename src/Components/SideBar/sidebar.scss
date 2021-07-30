@@ -37,7 +37,7 @@
       & .sideheader-more {
         position: absolute;
         font-size: 14px;
-        background: rgb(231, 154, 154);
+        background: u.$chat-white;
         padding: 10px 0;
         width: 200px;
         top: 55px;
@@ -104,6 +104,15 @@
     flex: 1;
     overflow-y: scroll;
 
+    &--names {
+      text-align: center;
+      // border-bottom: 1px solid u.$sidebar-margin-grey;
+      background: u.$chat-ribbon-green;
+      color: #fff;
+      letter-spacing: 3px;
+      padding-bottom: 3px;
+    }
+
     &--empty {
       background: u.$chat-yellow;
       padding: 10px 20px;
@@ -153,5 +162,27 @@
 
   &:hover {
     border: 3px solid rgb(45, 45, 255);
+  }
+}
+
+.addRoom {
+  & button {
+    width: 100%;
+    outline: none;
+    padding: 10px;
+    margin-bottom: 5px;
+  }
+
+  & form {
+    display: none;
+
+    &.inputOpen {
+      display: block;
+    }
+  }
+  & input {
+    width: 100%;
+    padding: 10px;
+    text-align: center;
   }
 }

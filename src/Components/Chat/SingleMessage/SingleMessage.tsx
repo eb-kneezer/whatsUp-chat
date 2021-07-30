@@ -1,5 +1,5 @@
 import React from "react";
-import { formatTime } from "../../../chatUtility";
+import { formatTime, roomColour } from "../../../chatUtility";
 import { useAppSelector } from "../../../Redux/hooks";
 import { MessageType } from "../index";
 import "./singlemessage.scss";
@@ -17,11 +17,21 @@ const SingleMessage = ({ message, prev }: SingleMessageProps) => {
       className={`message ${uid === message.uid ? "right" : ""} ${
         prev ? "same" : ""
       }`}>
-      <p className='message__body'>{message.text}</p>
-      <span className='message__filler'></span>
-      <span className='message__timestamp'>
-        {formatTime(message.timestamp)}
-      </span>
+      {uid !== message.uid && message.name && !prev && (
+        <div
+          className='message__sender'
+          style={{ color: roomColour(message.uid) }}>
+          {message.name}
+        </div>
+      )}
+
+      <div className='message__content'>
+        <p className='message__content--body'>{message.text}</p>
+        <span className='message__content--filler'></span>
+        <span className='message__content--timestamp'>
+          {formatTime(message.timestamp)}
+        </span>
+      </div>
     </div>
   );
 };

@@ -144,9 +144,67 @@ export const deleteUser = (userId: string) => {
   userDb.ref("users/" + userId).remove();
 };
 
-export const addNewRoom = (roomName: string) => {
+export const addNewRoom = (roomName: string, createdBy: string) => {
   chatDb.collection("rooms").add({
     name: roomName,
+    creator: createdBy,
     messages: [],
   });
+};
+
+const colorCache: { [key: string]: string } = {};
+export const roomColour = (id: string) => {
+  const colours = [
+    "#00EAD3",
+    "#FFF5B7",
+    "#FF449F",
+    "#FFF338",
+    "#FC5404",
+    "#F21170",
+    "#D2E603",
+    "#54E346",
+    "#CFFFFE",
+  ];
+
+  if (id in colorCache) {
+    return colorCache[id];
+  } else {
+    let newColour = colours[Math.floor(Math.random() * 10)];
+    colorCache[id] = newColour;
+    return newColour;
+  }
+};
+
+export const clearRoomMessages = (
+  userId: string,
+  activeChat: string,
+  currentChat: ChatType | undefined
+) => {
+  const createdBy = currentChat && currentChat[activeChat].creator;
+
+  if (userId === createdBy) {
+    chatDb.collection("rooms").doc(activeChat).update({
+      messages: firebase.firestore.FieldValue.delete(),
+    });
+  } else {
+    alert("You can only clear messages of rooms you created.");
+  }
+};
+
+export const deleteRoom = (
+  userId: string,
+  activeChat: string,
+  currentChat: ChatType | undefined
+) => {
+  const createdBy = currentChat && currentChat[activeChat].creator;
+
+  if (userId === createdBy) {
+    chatDb
+      .collection("rooms")
+      .doc(activeChat)
+      .delete()
+      .catch(() => alert("nothing to delete"));
+  } else {
+    alert("You can only delete rooms you created.");
+  }
 };

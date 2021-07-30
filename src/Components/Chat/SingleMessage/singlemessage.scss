@@ -2,7 +2,8 @@
 
 .message {
   display: flex;
-  align-items: center;
+
+  flex-direction: column;
   width: -webkit-fit-content;
   width: -moz-fit-content;
   width: fit-content;
@@ -11,35 +12,44 @@
   margin-top: 13px;
   padding: 5px 8px 5px 8px;
   border-radius: 8px;
-  background: #9857f2;
+  background: u.$chat-white;
   position: relative;
-  box-shadow: 0px 1px 1px -1px #000;
-  color: #fff;
+  box-shadow: 0px 1px 1px -1px rgb(48, 48, 48);
+  color: rgb(68, 68, 68);
   &::before {
     content: " ";
     position: absolute;
     border: 10px solid transparent;
-    border-top-color: #9857f2;
+    border-top-color: u.$chat-white;
     top: 0;
     left: -8px;
   }
 
-  &__body {
-    font-size: 14px;
+  &__sender {
+    font-size: 12px;
+    font-weight: bold;
   }
 
-  &__filler {
-    width: 40px;
-    display: inline-block;
-    height: 3px;
-    background: transparent;
-  }
+  &__content {
+    display: flex;
+    align-items: center;
+    &--body {
+      font-size: 14px;
+    }
 
-  &__timestamp {
-    position: absolute;
-    font-size: 11px;
-    right: 7px;
-    bottom: 5px;
+    &--filler {
+      width: 40px;
+      display: inline-block;
+      height: 3px;
+      background: transparent;
+    }
+
+    &--timestamp {
+      position: absolute;
+      font-size: 11px;
+      right: 7px;
+      bottom: 5px;
+    }
   }
 }
 
