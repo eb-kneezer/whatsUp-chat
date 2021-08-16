@@ -8,7 +8,7 @@ import SingleChat from "../Chat/SingleChat/SingleChat";
 import { chatDb } from "../../Firebase/firebase";
 import { useAppDispatch, useAppSelector } from "../../Redux/hooks";
 import { setActiveChat } from "../../Redux/ActiveChat/actions";
-import { addNewRoom, deleteUser } from "../../chatUtility";
+import { addNewRoom, ChatArrayType, deleteUser } from "../../chatUtility";
 import { useHistory } from "react-router-dom";
 import SingleRoom from "../Chat/SingleRoom/SingleRoom";
 
@@ -44,6 +44,26 @@ const SideBar = () => {
       });
 
     setIsSideModalOpen(!isSideModalOpen);
+  };
+
+  const sortChatsByTime = (chatArray: ChatArrayType) => {
+    function getTimeInSeconds(ISOString: string) {
+      const chatTime = new Date(ISOString);
+      return chatTime.getTime();
+    }
+    return chatArray.sort(
+      (chat1, chat2) =>
+        getTimeInSeconds(
+          chat2[Object.keys(chat2)[0]].messages[
+            chat2[Object.keys(chat2)[0]].messages.length - 1
+          ].timestamp
+        ) -
+        getTimeInSeconds(
+          chat1[Object.keys(chat1)[0]].messages[
+            chat1[Object.keys(chat1)[0]].messages.length - 1
+          ].timestamp
+        )
+    );
   };
 
   useEffect(() => {
@@ -97,7 +117,7 @@ const SideBar = () => {
         <div className='sidebar__container--chats'>
           <p className='sidebar__container--names'>CHATS</p>
           {allChats.length
-            ? allChats.map(chat => (
+            ? sortChatsByTime(allChats).map(chat => (
                 <SingleChat key={Object.keys(chat)[0]} chat={chat} />
               ))
             : (function () {

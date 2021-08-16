@@ -13,6 +13,7 @@ const SingleChat = ({ chat }: { chat: ChatType }) => {
   const currentUser = allUsers.find(user => user.uid === id);
 
   const numOfMessages = chat[id].messages?.length;
+
   return (
     <div
       onClick={() => dispatch(setActiveChat(id))}
