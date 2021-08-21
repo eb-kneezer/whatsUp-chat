@@ -45,7 +45,7 @@ const Chat = () => {
     ? [...allChats].find(chat => Object.keys(chat)[0] === activeChat)
     : [...allRooms].find(chat => Object.keys(chat)[0] === activeChat);
 
-  // console.log(currentChat);
+  // console.log(activeChat);
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({
@@ -172,13 +172,21 @@ const Chat = () => {
 
         <div className='chat__body'>
           <div className='chat__body--messages'>
-            <p className='chat__body--encryption'>
-              <BsUnlockFill
-                style={{ height: "10px", width: "10px", marginRight: "5px" }}
-              />
-              Messages are not end-to-end encrypted. people outside of this
-              chat, even WhatsUp, can read them. Do not click to learn more.
-            </p>
+            {activeChat === user.uid ? (
+              <p className='chat__body--encryption'>
+                Message yourself? Why not! Think of this as a scratchpad — a
+                place for jotting down a note or drawing up a to-do list.
+              </p>
+            ) : (
+              <p className='chat__body--encryption'>
+                <BsUnlockFill
+                  style={{ height: "10px", width: "10px", marginRight: "5px" }}
+                />
+                Messages are not end-to-end encrypted. people outside of this
+                chat, even WhatsUp, can read them. Do not click to learn more.
+              </p>
+            )}
+
             {currentChat && currentChat[activeChat].messages ? (
               currentChat[activeChat].messages.map(
                 (

@@ -51,19 +51,27 @@ const SideBar = () => {
       const chatTime = new Date(ISOString);
       return chatTime.getTime();
     }
-    return chatArray.sort(
-      (chat1, chat2) =>
-        getTimeInSeconds(
-          chat2[Object.keys(chat2)[0]].messages[
-            chat2[Object.keys(chat2)[0]].messages.length - 1
-          ].timestamp
-        ) -
-        getTimeInSeconds(
-          chat1[Object.keys(chat1)[0]].messages[
-            chat1[Object.keys(chat1)[0]].messages.length - 1
-          ].timestamp
-        )
-    );
+    return chatArray.sort((chat1, chat2) => {
+      if (
+        chat1[Object.keys(chat1)[0]].messages &&
+        chat2[Object.keys(chat2)[0]].messages
+      ) {
+        return (
+          getTimeInSeconds(
+            chat2[Object.keys(chat2)[0]].messages[
+              chat2[Object.keys(chat2)[0]].messages.length - 1
+            ].timestamp
+          ) -
+          getTimeInSeconds(
+            chat1[Object.keys(chat1)[0]].messages[
+              chat1[Object.keys(chat1)[0]].messages.length - 1
+            ].timestamp
+          )
+        );
+      } else {
+        return 0;
+      }
+    });
   };
 
   useEffect(() => {
