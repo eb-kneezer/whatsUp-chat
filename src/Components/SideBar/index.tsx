@@ -68,8 +68,10 @@ const SideBar = () => {
             ].timestamp
           )
         );
+      } else if (!chat1[Object.keys(chat1)[0]].messages) {
+        return -1;
       } else {
-        return 0;
+        return 1;
       }
     });
   };
@@ -202,21 +204,29 @@ const SideBar = () => {
 
       <div className={`sidebar__modal ${isSideModalOpen ? `active` : ``}`}>
         {allUsers.length ? (
-          allUsers.map(user => (
-            <div key={user.uid}>
-              <div
-                onClick={() => user.name && initChat(user.uid, user.name)}
-                className='sidebar__modal--photo'>
-                <img
-                  src={`${user.photo && user.photo}`}
-                  alt={`${user.name && user.name}`}
-                />
+          allUsers
+            .sort((a, b) => {
+              if (a.name && b.name) {
+                return a.name.localeCompare(b.name);
+              } else {
+                return -1;
+              }
+            })
+            .map(user => (
+              <div key={user.uid}>
+                <div
+                  onClick={() => user.name && initChat(user.uid, user.name)}
+                  className='sidebar__modal--photo'>
+                  <img
+                    src={`${user.photo && user.photo}`}
+                    alt={`${user.name && user.name}`}
+                  />
+                </div>
+                <div className='sidebar__modal--username'>{`${
+                  user.uid === uid ? "You" : `${user.name && user.name}`
+                }`}</div>
               </div>
-              <div className='sidebar__modal--username'>{`${
-                user.uid === uid ? "You" : `${user.name && user.name}`
-              }`}</div>
-            </div>
-          ))
+            ))
         ) : (
           <div>it's awfully empty in here...</div>
         )}

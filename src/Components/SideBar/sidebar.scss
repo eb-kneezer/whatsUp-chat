@@ -131,14 +131,17 @@
   &__modal {
     @include u.flex-display(row, center, space-around);
     flex-wrap: wrap;
-    width: 110%;
-    min-height: 50%;
+
+    min-width: 500px;
+    // width: 200%;
+    height: calc(100% - 80px);
     background: rgba(0, 0, 0, 0.76);
     position: absolute;
     top: 70px;
     left: 10px;
     z-index: 1000;
     display: none;
+    overflow: scroll;
     > div {
       @include u.flex-display(column, center, center);
       margin: 15px;
