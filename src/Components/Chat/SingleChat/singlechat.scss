@@ -69,3 +69,33 @@
     background: u.$sidebar-header-grey;
   }
 }
+
+.nochat {
+  background-color: #ff003393;
+  color: black;
+  height: 50px;
+  // padding: 15px;
+  // border-radius: 25px;
+  font-size: 13px;
+  @include u.flex-display(row, space-between, center);
+
+  &__message {
+    width: 85%;
+    text-align: center;
+    margin-left: 13px;
+  }
+
+  &__action {
+    @include u.flex-display(row, center, center);
+
+    width: 30px;
+    height: 30px;
+    margin: 0px 13px;
+    border-radius: 50%;
+    cursor: pointer;
+
+    &:hover {
+      background: #ff0033;
+    }
+  }
+}

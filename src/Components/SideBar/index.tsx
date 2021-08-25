@@ -151,7 +151,7 @@ const SideBar = () => {
                           }}
                         />{" "}
                       </span>
-                      above to find a fellow WhatsUpper.
+                      button above to find a fellow WhatsUpper.
                     </p>
                   </div>
                 );

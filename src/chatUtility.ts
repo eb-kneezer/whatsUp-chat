@@ -132,14 +132,13 @@ export const clearChatForEveryone = (myId: string, recieverId: string) => {
 };
 
 export const deleteUser = (userId: string) => {
-  auth.signOut();
-
   auth.currentUser
     ?.delete()
     .then(() => alert("account deleted"))
     .catch(() => {
       alert("failed to delete");
     });
+  auth.signOut();
   chatDb.collection("users").doc(userId).delete();
   userDb.ref("users/" + userId).remove();
 };
