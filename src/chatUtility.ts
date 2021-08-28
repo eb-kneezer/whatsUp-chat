@@ -154,15 +154,15 @@ export const addNewRoom = (roomName: string, createdBy: string) => {
 const colorCache: { [key: string]: string } = {};
 export const roomColour = (id: string) => {
   const colours = [
-    "#00EAD3",
-    "#FFF5B7",
-    "#FF449F",
-    "#FFF338",
-    "#FC5404",
-    "#F21170",
-    "#D2E603",
+    "#170055",
+    "#2D46B9",
+    "#FF2442",
+    "#AE00FB",
+    "#FFE459",
+    "#E63E6D",
+    "#2E5A1C",
     "#54E346",
-    "#CFFFFE",
+    "#FDB827",
   ];
 
   if (id in colorCache) {

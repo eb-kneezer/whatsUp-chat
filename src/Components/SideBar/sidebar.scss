@@ -42,10 +42,12 @@
         width: 200px;
         top: 55px;
         right: 0px;
+        // opacity: 0;
         display: none;
 
         &.open {
           display: block;
+          // opacity: 1;
         }
         p {
           width: 100%;

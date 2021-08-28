@@ -80,6 +80,9 @@ const SideBar = () => {
     if (allChats.length === 1) {
       dispatch(setActiveChat(Object.keys(allChats[0])[0]));
     }
+    if (allChats.length === 0) {
+      dispatch(setActiveChat(""));
+    }
     if (!allUsers) {
       history.push("/");
     }
@@ -126,36 +129,38 @@ const SideBar = () => {
       <div className='sidebar__container'>
         <div className='sidebar__container--chats'>
           <p className='sidebar__container--names'>CHATS</p>
-          {allChats.length
-            ? sortChatsByTime(allChats).map(chat => (
-                <SingleChat key={Object.keys(chat)[0]} chat={chat} />
-              ))
-            : (function () {
-                dispatch(setActiveChat(""));
-                return (
-                  <div className='sidebar__container--empty'>
-                    <p>
-                      Oops! looks like you have no active chats.
-                      <br /> Click the{" "}
-                      <span>
-                        <VscAdd
-                          style={{
-                            background: "#f0f0f0",
-                            borderRadius: "50%",
-                            height: "25px",
-                            width: "25px",
-                            border: "1px solid #e6e6e6",
-                            position: "absolute",
-                            top: "-16px",
-                            left: "4px",
-                          }}
-                        />{" "}
-                      </span>
-                      button above to find a fellow WhatsUpper.
-                    </p>
-                  </div>
-                );
-              })()}
+          {allChats.length ? (
+            sortChatsByTime(allChats).map(chat => (
+              <SingleChat key={Object.keys(chat)[0]} chat={chat} />
+            ))
+          ) : (
+            // function () {
+            // dispatch(setActiveChat(""));
+            // return (
+            <div className='sidebar__container--empty'>
+              <p>
+                Oops! looks like you have no active chats.
+                <br /> Click the{" "}
+                <span>
+                  <VscAdd
+                    style={{
+                      background: "#f0f0f0",
+                      borderRadius: "50%",
+                      height: "25px",
+                      width: "25px",
+                      border: "1px solid #e6e6e6",
+                      position: "absolute",
+                      top: "-16px",
+                      left: "4px",
+                    }}
+                  />{" "}
+                </span>
+                button above to find a fellow WhatsUpper.
+              </p>
+            </div>
+            // );
+            // })(
+          )}
         </div>
         <div className='sidebar__container--rooms'>
           <p className='sidebar__container--names'>ROOMS</p>

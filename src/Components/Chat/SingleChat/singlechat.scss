@@ -5,6 +5,8 @@
   height: 71px;
   padding: 0 12px;
   cursor: pointer;
+  background: #fff;
+  transition: background 0.3s ease;
   @include u.flex-display(row, flex-start, center);
 
   &:hover {

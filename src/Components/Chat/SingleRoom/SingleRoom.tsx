@@ -13,7 +13,12 @@ const SingleRoom = ({ room }: { room: ChatType }) => {
 
   return (
     <div
-      onClick={() => dispatch(setActiveChat(id))}
+      onClick={() => {
+        console.log("active before", activeChat);
+        dispatch(setActiveChat(id));
+        console.log(typeof id);
+        console.log("active after", activeChat);
+      }}
       className={`singleroom ${activeChat === id && "active"}`}>
       <div className='singleroom__img'>
         <img
