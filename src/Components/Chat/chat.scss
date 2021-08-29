@@ -65,7 +65,6 @@
       @include u.flex-display(row, space-between, center);
       position: relative;
       @include u.responsive(xsmobile) {
-        // justify-self: flex-end;
         width: -webkit-fit-content;
         width: -moz-fit-content;
         width: fit-content;
@@ -98,14 +97,16 @@
         width: 200px;
         border-radius: 3px;
         color: rgb(66, 66, 66);
-        padding: 10px 0;
         display: flex;
         flex-direction: column;
-        display: none;
+        height: 0px;
         z-index: 2000;
+        overflow: hidden;
+        transition: all 0.2s ease;
 
         &.open {
-          display: block;
+          padding: 10px 0;
+          height: auto;
         }
         p {
           width: 100%;

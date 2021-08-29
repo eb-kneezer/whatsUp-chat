@@ -56,17 +56,16 @@
     z-index: 3000;
     height: 95%;
     background: white;
-    display: none;
-    transition: all 3s ease;
-    transform: translateX(-250px);
+    left: -100%;
+    transition: left 0.5s ease-in-out;
   }
 
   &-sidenav.active {
     display: none;
+    transition: left 0.5s ease-out;
     @include u.responsive(mobile) {
+      left: 0px;
       display: block;
-      transform: translateX(0px);
-      // background: red;
     }
   }
 
