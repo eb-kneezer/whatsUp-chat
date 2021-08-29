@@ -156,6 +156,8 @@ const SideBar = () => {
                   />{" "}
                 </span>
                 button above to find a fellow WhatsUpper.
+                <br />
+                you can start with me, Ebenezer.
               </p>
             </div>
             // );
