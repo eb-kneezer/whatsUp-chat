@@ -18,7 +18,15 @@ function App() {
   useEffect(() => {
     auth.onAuthStateChanged(state => {
       if (state) {
-        localStorage.setItem("chatUser", JSON.stringify(state));
+        localStorage.setItem(
+          "chatUser",
+          JSON.stringify({
+            displayName: state.displayName,
+            email: state.email,
+            photoURL: state.photoURL,
+            uid: state.uid,
+          })
+        );
 
         dispatch(
           setUser({
