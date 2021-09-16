@@ -1,28 +1,36 @@
-import React from "react";
-
+import { doSignIn } from "../../chatUtility";
 import { SiWhatsapp } from "react-icons/si";
 import { FcGoogle } from "react-icons/fc";
+import Loader from "react-loader-spinner";
+
 import "./Login.scss";
-import { auth, provider, userDb } from "../../Firebase/firebase";
+import { useEffect, useState } from "react";
 
 const LoginPage = () => {
-  const doSignIn = () => {
-    auth
-      .signInWithPopup(provider)
-      .then(result => {
-        result.additionalUserInfo?.isNewUser &&
-          userDb.ref(`users/${result.user?.uid}`).set({
-            name: result.user?.displayName,
-            email: result.user?.email,
-            photo: result.user?.photoURL,
-            uid: result.user?.uid,
-          });
-      })
-      .catch(err => console.log(err));
-  };
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+
+  useEffect(() => {
+    // let clear =
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 3000);
+
+    // return clearTimeout(clear);
+  }, []);
 
   return (
     <div className='login'>
+      {isLoading && (
+        <div className='login__loader-wrapper'>
+          <Loader
+            type='Grid'
+            color='#00bfa5'
+            height={100}
+            width={100}
+            timeout={3000} //3 secs
+          />
+        </div>
+      )}
       <div className='login__img'></div>
       <div className='login__cta'>
         <div className='login__cta--icon'>

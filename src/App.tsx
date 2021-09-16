@@ -1,11 +1,7 @@
-import React, { useEffect } from "react";
-import { Route, Switch, useHistory } from "react-router-dom";
-import { IconContext } from "react-icons";
+import { useEffect } from "react";
 import "./App.scss";
-import * as ROUTES from "./Constants/routes";
 
 import HomePage from "./Pages/Home";
-import LoginPage from "./Pages/Login";
 import { auth, userDb } from "./Firebase/firebase";
 import { setUser } from "./Redux/User/actions";
 import { setAllUsers } from "./Redux/AllUsers/actions";
@@ -13,7 +9,6 @@ import { useAppDispatch } from "./Redux/hooks";
 
 function App() {
   const dispatch = useAppDispatch();
-  const history = useHistory();
 
   useEffect(() => {
     auth.onAuthStateChanged(state => {
@@ -36,7 +31,6 @@ function App() {
             photo: state.photoURL,
           })
         );
-        history.push("/home");
       } else {
         localStorage.removeItem("chatUser");
         dispatch(
@@ -59,16 +53,11 @@ function App() {
         }));
       dispatch(setAllUsers(usersList));
     });
-  }, [dispatch, history]);
+  }, [dispatch]);
 
   return (
     <div className='App'>
-      <Switch>
-        <Route path={ROUTES.LOGIN} component={LoginPage} exact />
-        <IconContext.Provider value={{ className: "react-icons" }}>
-          <Route path={ROUTES.HOME} component={HomePage} exact />
-        </IconContext.Provider>
-      </Switch>
+      <HomePage />
     </div>
   );
 }

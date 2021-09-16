@@ -1,4 +1,3 @@
-import React from "react";
 import "./singlechat.scss";
 import { ChatType, deleteChat, formatTime } from "../../../chatUtility";
 import { useAppDispatch, useAppSelector } from "../../../Redux/hooks";
