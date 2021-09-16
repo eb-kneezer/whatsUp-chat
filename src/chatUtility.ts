@@ -1,4 +1,4 @@
-import { auth, chatDb, userDb } from "./Firebase/firebase";
+import { auth, chatDb, userDb, provider } from "./Firebase/firebase";
 import firebase from "firebase/app";
 import "firebase/database";
 import "firebase/firestore";
@@ -14,6 +14,25 @@ export type UserType = {
   name: string | null;
   email: string | null;
   photo: string | null;
+};
+
+export const doSignIn = () => {
+  auth
+    .signInWithPopup(provider)
+    .then(result => {
+      result.additionalUserInfo?.isNewUser &&
+        userDb.ref(`users/${result.user?.uid}`).set({
+          name: result.user?.displayName,
+          email: result.user?.email,
+          photo: result.user?.photoURL,
+          uid: result.user?.uid,
+        });
+    })
+    .catch(err => console.log(err));
+};
+
+export const doSignOut = () => {
+  auth.signOut();
 };
 
 export const formatTime = (time: string) => {

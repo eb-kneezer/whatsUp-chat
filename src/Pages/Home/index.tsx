@@ -1,17 +1,20 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import "./Home.scss";
+
+import Loader from "react-loader-spinner";
 
 import SideBar from "../../Components/SideBar";
 import Chat from "../../Components/Chat";
-import { ChatArrayType } from "../../chatUtility";
+import { ChatArrayType, doSignOut } from "../../chatUtility";
 import { CgCloseR } from "react-icons/cg";
-import { auth, chatDb } from "../../Firebase/firebase";
+import { chatDb } from "../../Firebase/firebase";
 import { useHistory } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../Redux/hooks";
 import { setAllChats } from "../../Redux/AllChats/actions";
 import { FiMenu } from "react-icons/fi";
 import { VscChromeClose } from "react-icons/vsc";
 import { setAllRooms } from "../../Redux/AllRooms/action";
+import Login from "../Login";
 
 const HomePage = () => {
   const dispatch = useAppDispatch();
@@ -20,12 +23,16 @@ const HomePage = () => {
 
   const [isSideNavOpen, setIsSideNavOpen] = useState<boolean>(false);
 
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+
+  setTimeout(() => {
+    setIsLoading(false);
+  }, 3000);
+
   const { uid } = user;
 
   useEffect(() => {
-    if (!uid) {
-      history.push("/");
-    } else {
+    if (uid) {
       let chats: ChatArrayType = [];
       chatDb
         .collection("users")
@@ -50,13 +57,23 @@ const HomePage = () => {
     }
   }, [dispatch, history, uid]);
 
-  const doSignOut = () => {
-    auth.signOut();
-    history.push("/");
-  };
+  if (!uid) {
+    return <Login />;
+  }
 
   return (
     <main className='container'>
+      {isLoading && (
+        <div className='container__loader-wrapper'>
+          <Loader
+            type='Grid'
+            color='#00bfa5'
+            height={100}
+            width={100}
+            timeout={3000} //3 secs
+          />
+        </div>
+      )}
       <div className='container__ribbon'>
         <span
           onClick={() => setIsSideNavOpen(!isSideNavOpen)}

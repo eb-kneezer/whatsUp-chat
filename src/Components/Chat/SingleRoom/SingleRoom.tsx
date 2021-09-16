@@ -1,4 +1,3 @@
-import React from "react";
 import { ChatType, formatTime } from "../../../chatUtility";
 import { setActiveChat } from "../../../Redux/ActiveChat/actions";
 import { useAppDispatch, useAppSelector } from "../../../Redux/hooks";
@@ -14,10 +13,7 @@ const SingleRoom = ({ room }: { room: ChatType }) => {
   return (
     <div
       onClick={() => {
-        console.log("active before", activeChat);
         dispatch(setActiveChat(id));
-        console.log(typeof id);
-        console.log("active after", activeChat);
       }}
       className={`singleroom ${activeChat === id && "active"}`}>
       <div className='singleroom__img'>
